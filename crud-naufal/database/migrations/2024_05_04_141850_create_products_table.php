@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('purchase_price');
             $table->string('size')->nullable();
             $table->integer('stock')->default(0);
-            $table->string('thumbnail');
+            $table->string('thumbnail'); // thumbnail url
             $table->enum('status', ['published', 'unpublished'])->default('unpublished');
             $table->timestamps();
         });
