@@ -14,13 +14,24 @@ class ProductPhotosController extends Controller
      */
     public function index($productId)
     {
-        $product = Product::find($productId)->load('photos');
+        try {
+            $product = Product::find($productId)->load('photos');
+    
+            if($product){
+                return response()->json([
+                    'success' => 1,
+                    'message' => 'Successfully Fetch Product Photos',
+                    'data' => $product->photos
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'success' => 0 ,
+                'message' => 'Failed to Fetch ProductPhotos or Product not Found'
+            ],422);
+        }
 
-        return response()->json([
-            'success' => 1,
-            'message' => 'Successfully Fetch Product Photos',
-            'data' => $product->photos
-        ]);
     }
 
     /**
@@ -53,7 +64,7 @@ class ProductPhotosController extends Controller
                 $fileExtensions = $photo->extension();
                         
                 $filename =  $fileUuid . '.' . $fileExtensions;
-                $photo->storeAs($photosFilepath, $filename);
+                $photo->storeAs('public/'.$photosFilepath, $filename);
 
                 $product->photos()->create([
                     'photo_url' => $photosFilepath . '/' . $filename
@@ -72,7 +83,6 @@ class ProductPhotosController extends Controller
             'success' => 0,
             'message' => 'Product Not Found'
         ], 404);
-        dd("NOT OK");
     }
 
     /**
@@ -102,8 +112,24 @@ class ProductPhotosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductPhotos $productPhotos)
+    public function destroy($productId, $productPhotos)
     {
-        //
+        $productPhoto = ProductPhotos::where('id','=',$productPhotos)->where('product_id',$productId);
+
+        if($productPhoto){
+            $productPhoto->delete();
+
+            return response()->json([
+                'success'=> 1,
+                'message' => 'Successfully delete ProductPhoto'
+            ]);
+        }
+
+        return response()->json([
+            'success' => 0,
+            'message' => 'Product Photo Not Found'
+        ]);
+
+        // dd($productPhoto, $productPhotos, $productId);
     }
 }

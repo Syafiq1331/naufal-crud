@@ -36,6 +36,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         try {
             if($request->has('photos')){
                 $request->validate([
@@ -71,7 +72,7 @@ class ProductController extends Controller
                         $fileExtensions = $image->extension();
                         
                         $filename =  $fileUuid . '.' . $fileExtensions;
-                        $image->storeAs($photosFilepath, $filename);
+                        $image->storeAs('public/'. $photosFilepath, $filename);
 
                         $product->photos()->create([
                             'photo_url' => $photosFilepath . '/' . $filename
@@ -92,7 +93,7 @@ class ProductController extends Controller
             $filepath = 'products/thumbnail';
             $filename = $thumbnailNewFileName . '.' . $thumbnailFile->extension();
             
-            $thumbnailFile->storeAs($filepath, $filename);
+            $thumbnailFile->storeAs('public/'.$filepath, $filename);
             
             $product = Product::create(array_merge($request->except(['_csrf','status']), ['thumbnail' => $filepath . '/' . $filename]));
 
@@ -107,7 +108,7 @@ class ProductController extends Controller
                     $fileExtensions = $image->extension();
                     
                     $filename =  $fileUuid . '.' . $fileExtensions;
-                    $image->storeAs($photosFilepath, $filename);
+                    $image->storeAs('public/'.$photosFilepath, $filename);
                     
                     $product->photos()->create([
                         'photo_url' => $photosFilepath . '/' . $filename
@@ -194,7 +195,7 @@ class ProductController extends Controller
                 $filepath = 'products/thumbnail';
                 $filename = $thumbnailNewFileName . '.' . $thumbnailFile->extension();
                 
-                $thumbnailFile->storeAs($filepath, $filename);
+                $thumbnailFile->storeAs('public/'.$filepath, $filename);
                 
                 $product->update(array_merge($request->except(['_csrf','status','method']), ['thumbnail' => $filepath . '/' . $filename]));
                 return response()->json([
