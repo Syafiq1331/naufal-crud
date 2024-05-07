@@ -52,7 +52,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
     });
 
     Array.from(data.images).forEach((file,i) => {
-      formData.append(`images[${i}]`, file);
+      formData.append(`photos[${i}]`, file);
     });
 
     try {
