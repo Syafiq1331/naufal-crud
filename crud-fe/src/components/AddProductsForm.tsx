@@ -20,7 +20,7 @@ interface ApiResponse {
   message: string;
 }
 
-const MultipleTextAndImageUploadForm: React.FC = () => {
+const AddProductsForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [thumbnailFiles, setThumbnailFiles] = useState<File[]>([]);
@@ -75,10 +75,10 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
 
   return (
     <div>
-      <h2>Form with Multiple Text Inputs and Image Uploads</h2>
+      <h2>Input On Each Field. For Images,it's Multiple</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="name">name</label>
+          <label htmlFor="name" className='block'>name</label>
           <input
             id="name"
             type="text"
@@ -88,7 +88,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="block">Description</label>
           <textarea
             id="description"
             {...register('description', { required: 'Description is required' })}
@@ -97,7 +97,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="price">price</label>
+          <label htmlFor="price" className="block">price</label>
           <input
           type="number"
             id="price"
@@ -106,7 +106,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.description && <span>{errors.description.message}</span>}
         </div>
         <div>
-          <label htmlFor="price_discount">price_discount</label>
+          <label htmlFor="price_discount" className="block">price_discount</label>
           <input
           type="number"
             id="price_discount"
@@ -115,7 +115,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.description && <span>{errors.description.message}</span>}
         </div>
         <div>
-          <label htmlFor="purchase_price">purchase_price</label>
+          <label htmlFor="purchase_price" className="block">purchase_price</label>
           <input
           type="number"
             id="purchase_price"
@@ -124,7 +124,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.description && <span>{errors.description.message}</span>}
         </div>
         <div>
-          <label htmlFor="stock">stock</label>
+          <label htmlFor="stock" className="block">stock</label>
           <input
             id="stock"
             type="number"
@@ -133,7 +133,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.description && <span>{errors.description.message}</span>}
         </div>
         <div>
-          <label htmlFor="purchase_price">purchase_price</label>
+          <label htmlFor="purchase_price" className="block">purchase_price</label>
           <input
             id="purchase_price"
             type="number"
@@ -142,7 +142,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.description && <span>{errors.description.message}</span>}
         </div>
         <div>
-          <label htmlFor="kode_product">kode_product</label>
+          <label htmlFor="kode_product" className="block">kode_product</label>
           <input
             id="kode_product"
             type="text"
@@ -152,8 +152,9 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="thumbnail">Upload thumbnail</label>
+          <label htmlFor="thumbnail" className="block">Upload thumbnail</label>
           <input
+          className='my-4'
             id="thumbnail"
             type="file"
             accept="image/*"
@@ -164,8 +165,9 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
         </div>
 
         <div>
-          <label htmlFor="images">Upload Images</label>
+          <label htmlFor="images" className="block">Upload Images (multiple)</label>
           <input
+          className='my-4'
             id="images"
             type="file"
             multiple
@@ -176,7 +178,7 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
           {errors.images && <span>{errors.images.message}</span>}
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" className='w-full sm:w-auto py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white dark:disabled:text-indigo-400 text-sm font-semibold rounded-md shadow focus:outline-none cursor-pointer'>Submit</button>
       </form>
 
       {submitStatus && <div>{submitStatus}</div>} {/* Display submission status */}
@@ -184,4 +186,4 @@ const MultipleTextAndImageUploadForm: React.FC = () => {
   );
 };
 
-export default MultipleTextAndImageUploadForm;
+export default AddProductsForm;

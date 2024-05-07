@@ -115,6 +115,7 @@ class ProductPhotosController extends Controller
     public function destroy($productId, $productPhotos)
     {
         $productPhoto = ProductPhotos::where('id','=',$productPhotos)->where('product_id',$productId);
+        // dd($productPhoto, $productPhotos, $productId);
 
         if($productPhoto){
             $productPhoto->delete();
@@ -130,6 +131,5 @@ class ProductPhotosController extends Controller
             'message' => 'Product Photo Not Found'
         ]);
 
-        // dd($productPhoto, $productPhotos, $productId);
     }
 }

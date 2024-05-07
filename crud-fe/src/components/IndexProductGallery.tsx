@@ -34,11 +34,11 @@ const IndexProductGallery = () => {
     return <div>Error: {error}</div>;
   }
 
-  const handleDelete = async (event:any) =>{
-  event.preventDefault()
+  const handleDelete = async (event: any) => {
+    event.preventDefault()
     console.log("DELETE PRODUCT", event.target.value)
     try {
-      const call = await fetch("http://127.0.0.1:8000/api/products/" + event.target.value,{
+      const call = await fetch("http://127.0.0.1:8000/api/products/" + event.target.value, {
         method: 'DELETE'
       });
 
@@ -46,7 +46,7 @@ const IndexProductGallery = () => {
       console.log(data)
 
     } catch (error) {
-      
+
     }
     redirect('/products')
   }
@@ -55,20 +55,20 @@ const IndexProductGallery = () => {
     <div className="image-gallery">
       {images.map((image, index) => (
         <>
-        <div className='my-5 max-w-lg'>
-          <div className='my-3'>
-        <h2>{image.name}</h2>
-        <h3>{image.price}</h3>
-        <p>{image.description}</p>
-        <form className='flex gap-3 my-2'>
-          <input type="hidden" name="id" value={image.id} />
-          <Link className='w-full sm:w-auto py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white dark:disabled:text-indigo-400 text-sm font-semibold rounded-md shadow focus:outline-none cursor-pointer' to={'/products/' + image.id + '/edit'}>Edit</Link>
-            <button value={image.id} onClick={handleDelete} className='w-full sm:w-auto py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white dark:disabled:text-indigo-400 text-sm font-semibold rounded-md shadow focus:outline-none cursor-pointer'>Delete</button>
-        </form>
-          </div>
+          <div className='my-10 max-w-lg p-3 border border-2'>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold'>{image.name}</h2>
+              <p>{image.price}</p>
+              <p>{image.description} --- <span className='font-medium italic'>it has image gallery total: {image.photos.length} image </span></p>
+              <form className='flex gap-3 my-2'>
+                <input type="hidden" name="id" value={image.id} />
+                <Link className='w-full sm:w-auto py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white dark:disabled:text-indigo-400 text-sm font-semibold rounded-md shadow focus:outline-none cursor-pointer' to={'/products/' + image.id + '/edit'}>Edit</Link>
+                <button value={image.id} onClick={handleDelete} className='w-full sm:w-auto py-2 px-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 dark:disabled:bg-indigo-800 text-white dark:disabled:text-indigo-400 text-sm font-semibold rounded-md shadow focus:outline-none cursor-pointer'>Delete</button>
+              </form>
+            </div>
 
-        <img className='max-w-sm' key={index} src={'http://127.0.0.1:8000/storage/' + image.thumbnail} alt={image.name} />
-        </div>
+            <img className='max-w-sm' key={index} src={'http://127.0.0.1:8000/storage/' + image.thumbnail} alt={image.name} />
+          </div>
         </>
       ))}
     </div>
