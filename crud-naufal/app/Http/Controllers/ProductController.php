@@ -176,12 +176,14 @@ class ProductController extends Controller
                     'size' => 'nullable|integer',
                     'stock' => 'nullable|integer',
                     'thumbnail' => 'nullable|image',
+                    'photos' => 'nullable|array',
+                    'photos.*' => 'image'
                 ]);
 
                 if($request->has('photos')){
                     // batch upload photo
                     $images = $request->file('photos');
-        
+
                     foreach($images as $image){
                         $fileUuid = Str::uuid();
                         $photosFilepath = 'products/photos';
@@ -203,7 +205,7 @@ class ProductController extends Controller
                     return response()->json([
                         'success' => 1,
                         'message' => 'Successfully Update Product',
-                        ]);
+                    ]);
                 }
 
                 // dd($request->all());
