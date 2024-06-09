@@ -156,7 +156,7 @@ class ProductController extends Controller
     {
         dd('edit page');
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -164,7 +164,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::findOrFail($product);
-
+            
             if($product){
                 $request->validate([
                     'name' => 'nullable|string',
@@ -177,34 +177,52 @@ class ProductController extends Controller
                     'stock' => 'nullable|integer',
                     'thumbnail' => 'nullable|image',
                 ]);
-                
-                
+
+                if($request->has('photos')){
+                    // batch upload photo
+                    $images = $request->file('photos');
+        
+                    foreach($images as $image){
+                        $fileUuid = Str::uuid();
+                        $photosFilepath = 'products/photos';
+        
+                        $fileExtensions = $image->extension();
+                        
+                        $filename =  $fileUuid . '.' . $fileExtensions;
+                        $image->storeAs('public/'.$photosFilepath, $filename);
+                        
+                        $product->photos()->create([
+                            'photo_url' => $photosFilepath . '/' . $filename
+                        ]);
+                    }
+                }
+
                 if(!$request->hasFile('thumbnail')){
                     $product->update($request->except(['_csrf','status','method']));
 
                     return response()->json([
                         'success' => 1,
                         'message' => 'Successfully Update Product',
-                    ]);
+                        ]);
                 }
 
-                $thumbnailFile = $request->file('thumbnail');
-        
-                $thumbnailNewFileName = Str::uuid();
+                // dd($request->all());
                 
+                $thumbnailFile = $request->file('thumbnail');
+                $thumbnailNewFileName = Str::uuid();
                 $filepath = 'products/thumbnail';
                 $filename = $thumbnailNewFileName . '.' . $thumbnailFile->extension();
-                
                 $thumbnailFile->storeAs('public/'.$filepath, $filename);
-                
                 $product->update(array_merge($request->except(['_csrf','status','method']), ['thumbnail' => $filepath . '/' . $filename]));
+                
+                
                 return response()->json([
                     'success' => 1,
                     'message' => 'Product Successfully Updated'
                 ]);
             }
-        } catch (\Throwable $th) {
-            return response()->json($th);
+        } catch (\Exception $th) {
+            throw $th;
         }        
     }
 
